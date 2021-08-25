@@ -22,3 +22,7 @@ This app is fully functional, but also still a work in progress.
 * automatically pick test from available tests
 * better separate abstract/base classes from concrete test classes
 * improve output readability
+* add (optional) progress bar
+* add more test details to output (test name, input/output, etc.)
+* add memory statistics
+* add "x% slower" metrics to output
