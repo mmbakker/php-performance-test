@@ -6,11 +6,11 @@ abstract class AbstractTestRunner
 {
     public const DEFAULT_TEST_RUN_TIME = 2500; // ms to run per test
 
-    /** @var array|TestInterface[] */
-    private $tests = [];
+    /** @var TestInterface[] */
+    private array $tests = [];
 
-    /** @var array|float[] */
-    private $times = [];
+    /** @var float[] */
+    private array $times = [];
 
     protected function addTest(TestInterface $test): void
     {

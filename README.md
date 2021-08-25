@@ -14,6 +14,9 @@ This app is fully functional, but also still a work in progress.
 * run multiple tests in one go.
 
 ### To do (in no particular order):
+* extend this README:
+  * add install instructions
+  * add usage instructions
 * override sorting
 * override run time (currently fixed at 2.5 seconds per scenario)
 * automatically pick test from available tests
