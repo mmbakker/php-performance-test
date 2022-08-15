@@ -19,11 +19,17 @@ abstract class AbstractTestRunner
 
     public function runTests(): array
     {
+        echo $this->getName(), "\n";
+
         foreach ($this->tests as $test) {
+            printf("\r-> Running %- 80s", $test->getName());
+
             $microtime = $this->runTest($test);
 
             $this->times[$test->getName()] = $microtime;
         }
+
+        echo "\r";
 
         return $this->times;
     }
@@ -34,11 +40,10 @@ abstract class AbstractTestRunner
         $arguments = $test->getArguments();
 
         $start = microtime(true);
-        $runtime = 0;
         $iterations = 0;
 
         while (true) {
-            call_user_func($callback, ...$arguments);
+            $callback(...$arguments);
             $iterations++;
 
             $runtime = microtime(true) - $start;
@@ -56,7 +61,9 @@ abstract class AbstractTestRunner
     {
         $result = [];
 
-        foreach ($this->tests as $test) {
+        $maxIterationsPerSecond = 0;
+
+        foreach ($this->tests as $i => $test) {
             $name = $test->getName();
 
             if (empty($this->times[$name])) {
@@ -65,18 +72,33 @@ abstract class AbstractTestRunner
 
             $iterationsPerSecond = 1 / ($this->times[$name] / $test->getIterationsMade());
 
+            $maxIterationsPerSecond = max($maxIterationsPerSecond, $iterationsPerSecond);
+
             if ($asTableData) {
                 $result[] = [
                     'Test' => $name,
                     'Total time' => number_format($this->times[$name], 3),
                     '# iterations' => number_format($test->getIterationsMade()),
                     'Iterations/sec' => number_format(round($iterationsPerSecond, 1), 1),
+                    'iterations_per_second' => $iterationsPerSecond,
                 ];
             } else {
                 $result[$name] = number_format($iterationsPerSecond, 1);
             }
         }
 
+        foreach ($result as &$row) {
+            $row['% slower'] = number_format(abs($row['iterations_per_second'] / $maxIterationsPerSecond * 100 - 100), 3);
+            unset($row['iterations_per_second']);
+        }
+
         return $result;
+    }
+
+    public function getName(): string
+    {
+        $class = static::class;
+
+        return substr($class, strrpos($class, '\\') + 1);
     }
 }
