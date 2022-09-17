@@ -40,9 +40,9 @@ class PerformanceTestCommand extends Command
             // new ArrayMergeVsArrayPlusArray(),
             // new ArraySearchVsFor(),
             // new ArrayFillVsForLoop(),
-            // new SerializeVsJsonEncode(),
-            // new UnserializeVsJsonDecode(),
-            new PowVsAsterisks(),
+            new SerializeVsJsonEncode(),
+            new UnserializeVsJsonDecode(),
+            // new PowVsAsterisks(),
         ];
     }
 
